@@ -1,6 +1,6 @@
 # BTAA County Map
 
-The primary purpose of this interactive map is to show what states and counties the [BTAA Geoportal](https://geo.btaa.org/) are pulling data from. Ideally it will be incorporated into the geoportal itself to be used as an alternative spatial search tool. 
+The primary purpose of this interactive map is to show what states and counties [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. Ideally it will be incorporated into the geoportal itself to be used as an alternative spatial search tool. 
 
 There are two versions using different techniques: one is built upon **ArcGIS** applications while the other is based on open source JavaScript library **Leaflet**.
 
