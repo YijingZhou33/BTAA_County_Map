@@ -4,27 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BTAA County Map</title>
     <link rel="stylesheet" href="https://js.arcgis.com/4.16/esri/css/main.css">
     <link rel="stylesheet" href="css/main.css">
+    <!-- Calcite Maps Bootstrap -->
+    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-bootstrap.min-v0.10.css">
+    <!-- Calcite Maps -->
+    <link rel="stylesheet" href="https://esri.github.io/calcite-maps/dist/css/calcite-maps-arcgis-4.x.min-v0.10.css">
     <script src="https://js.arcgis.com/4.16/"></script>
     <script src="js/main.js"></script>
 </head>
 
-<body>
-    <div id="states-filter" class="esri-widget">
-        <div class="state-item visible-state" data-state="Illinois">Illinois</div>
-        <div class="state-item visible-state" data-state="Indiana">Indiana</div>
-        <div class="state-item visible-state" data-state="Iowa">Iowa</div>
-        <div class="state-item visible-state" data-state="Maryland">Maryland</div>
-        <div class="state-item visible-state" data-state="Michigan">Michigan</div>
-        <div class="state-item visible-state" data-state="Minnesota">Minnesota</div>
-        <div class="state-item visible-state" data-state="Nebraska">Nebraska</div>
-        <div class="state-item visible-state" data-state="Ohio">Ohio</div>
-        <div class="state-item visible-state" data-state="Pennsylvania">Pennsylvania</div>
-        <div class="state-item visible-state" data-state="Wisconsin">Wisconsin</div>
+<body class="calcite-nav-top">
+    <!-- Navbar -->
+    <nav class="calcite-navbar navbar navbar-fixed-top calcite-text-light calcite-bg-dark" style="background-color:rgba(58,58,60,0.8);">
+        <!-- Title -->
+        <div class="calcite-title calcite-overflow-hidden" style="padding-left:2rem;">
+            <span class="calcite-title-main">
+                <a href="https://geo.btaa.org/" style="color:#0088ce;text-decoration:none;">Big Ten Academic Alliance Geoportal County Map</a>
+            </span>
+            <span class="calcite-title-divider hidden-xs"></span>
+            <span class="calcite-title-sub hidden-xs">An Alternative Search Tool</span>
+        </div>
+    </nav>
+
+    <!-- Panels -->
+
+    <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
+
+        <!-- Panel - Basemaps -->
+
+        <div id="panelInfo" class="panel collapse in">
+            <div id="headingInfo" class="panel-heading" role="tab">
+                <div class="panel-title">
+                    <a class="panel-toggle" role="button" data-toggle="collapse" href="#" aria-expanded="true" aria-controls="collapseInfo"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="panel-label">About</span></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <p>The primary purpose of this interactive map is to show what states and counties BTAA Geoportal is pulling data from. Ideally it will be incorporated into the geoportal itself to be used as an alternative spatial search tool.</p>
+            </div>
+        </div>
     </div>
-    <div id="viewDiv"></div>
+
+    <!-- /.calcite-panels -->
+
+    <div class="calcite-map calcite-map-absolute">
+        <div id="states-filter" class="esri-widget">
+            <div class="state-item visible-state" data-state="Illinois">Illinois</div>
+            <div class="state-item visible-state" data-state="Indiana">Indiana</div>
+            <div class="state-item visible-state" data-state="Iowa">Iowa</div>
+            <div class="state-item visible-state" data-state="Maryland">Maryland</div>
+            <div class="state-item visible-state" data-state="Michigan">Michigan</div>
+            <div class="state-item visible-state" data-state="Minnesota">Minnesota</div>
+            <div class="state-item visible-state" data-state="Nebraska">Nebraska</div>
+            <div class="state-item visible-state" data-state="Ohio">Ohio</div>
+            <div class="state-item visible-state" data-state="Pennsylvania">Pennsylvania</div>
+            <div class="state-item visible-state" data-state="Wisconsin">Wisconsin</div>
+        </div>
+        <div id="viewDiv" style="padding-top:50px;"></div>
+    </div>
 </body>
 
 </html>

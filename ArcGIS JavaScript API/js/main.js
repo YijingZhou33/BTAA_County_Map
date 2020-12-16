@@ -1,10 +1,12 @@
 require([
     "esri/Map",
+    "esri/layers/VectorTileLayer",
     "esri/layers/FeatureLayer",
     "esri/views/MapView",
     "esri/widgets/Expand",
-    "esri/tasks/support/Query"
-], function(Map, FeatureLayer, MapView, Expand, Query) {
+    "esri/tasks/support/Query",
+
+], function(Map, VectorTileLayer, FeatureLayer, MapView, Expand, Query) {
     let stateLayerView;
 
     const statesRender = {
@@ -44,9 +46,13 @@ require([
 
     const active = new FeatureLayer({
         portalItem: {
-            id: "442f9f79f0494b5093887bf98acdf15b"
+            id: "d570c37116e34791a6a169c12678c9d7"
         },
         renderer: activeRender
+    });
+
+    const basemap = new VectorTileLayer({
+        url: "https://umn.maps.arcgis.com/sharing/rest/content/items/96cfa3ffcb1b4ad683e146df63830e81/resources/styles/root.json?f=pjson"
     });
 
     // Popup Template
@@ -68,22 +74,22 @@ require([
 
     active.popupTemplate = template;
 
+
     const map = new Map({
-        basemap: "gray",
-        layers: [states, active]
+        layers: [basemap, states, active]
     });
 
     const view = new MapView({
         container: "viewDiv",
         map: map,
         center: [-90.86426943538162, 41.45370952725294],
-        zoom: 5,
+        zoom: 4,
         popup: {
             dockEnabled: true,
             dockOptions: {
                 buttonEnabled: false,
                 breakpoint: false,
-                position: "auto"
+                position: "bottom-left"
             }
         }
     });
