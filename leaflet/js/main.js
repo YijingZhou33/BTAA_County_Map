@@ -29,9 +29,9 @@ var sizeCities = [];
 $(document).ready(function() {
 
     /********** File Path **********/
-    countyJSON = '/json/activeCounties.json';
-    cityJSON = '/json/activeCities.json';
-    legendJSON = '/json/legend.json';
+    countyJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/activeCounties.json';
+    cityJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/activeCities.json';
+    legendJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/legend.json';
 
     /********** Map Initialization **********/
     mymap = L.map('mapdiv').setView([43, -84], 5);
