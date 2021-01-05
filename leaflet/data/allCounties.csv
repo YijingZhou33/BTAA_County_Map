@@ -1,4 +1,4 @@
-Code,County,State,Title,sourceURL,btaaURL
+countyCode,County,State,Title,sourceURL,btaaURL
 01b-18057,Hamilton County,Indiana,Hamilton County GIS Portal Data Downloads,https://gis1.hamiltoncounty.in.gov/portal/home,https://geo.btaa.org/?q=01b-18057
 01b-18163,Vanderburgh County,Indiana,"Evansville, Vanderburgh County Open Data Portal",https://dev-evansvilleapc.opendata.arcgis.com,https://geo.btaa.org/?q=01b-18163
 02b-17001,Adams County,Illinois,"Adams County, Illinois GIS",https://www.adamscountygis.com,https://geo.btaa.org/?q=02b-17001

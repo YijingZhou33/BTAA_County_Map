@@ -372,7 +372,7 @@ $(document).ready(function() {
     }
 
 
-    /********** Custom Legend **********/
+    /********** Custom PlaceName Panel **********/
     infoPanel = L.control({ position: 'topright' });
     infoPanel.onAdd = function() {
         var div = L.DomUtil.create('div', 'info legend place');

@@ -175,7 +175,7 @@ def create_geojson_features(df):
             'properties': {
                 'County': row['County'],
                 'State': row['State'],
-                'Code': row['Code'],
+                'countyCode': row['countyCode'],
                 'Title': row['Title'],
                 'sourceURL': row['sourceURL'], 
                 'btaaURL': row['btaaURL'],
@@ -299,7 +299,7 @@ def create_geojson_features(df):
             'properties': {
                 'City': row['City'],
                 'State': row['State'],
-                'Code': row['Code'],
+                'cityCode': row['cityCode'],
                 'Title': row['Title'],
                 'sourceURL': row['sourceURL'], 
                 'btaaURL': row['btaaURL'],
