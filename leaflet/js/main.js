@@ -87,7 +87,7 @@ $(document).ready(function() {
                 popupBody = '';
             }
             popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                +att.btaaURL + '" style="color: black;">Browser ' + att.County + ' geospatial datasets</a></div>';
+                +att.btaaURL + '" style="color: black;">Browse ' + att.County + ' geospatial datasets</a></div>';
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
                     att.sourceURL[i] + '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
@@ -144,7 +144,7 @@ $(document).ready(function() {
                 popupBody = '';
             }
             popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                att.btaaURL + '" style="color: black;">Browser ' + att.City + ' geospatial datasets</a></div>'
+                att.btaaURL + '" style="color: black;">Browse ' + att.City + ' geospatial datasets</a></div>'
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] +
                     '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
