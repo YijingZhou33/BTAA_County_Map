@@ -25,6 +25,7 @@ var intervalCounties = [];
 var paletteCounties = [];
 var intervalCities = [];
 var sizeCities = [];
+var aboutContainer;
 
 $(document).ready(function() {
 
@@ -80,15 +81,16 @@ $(document).ready(function() {
             mymap.fitBounds(e.target.getBounds());
             $('#popupTemplate').show();
             $('.card-header').css("background-color", att.Style.Color);
-            $('#textTitle').html('<a href=' + att.btaaURL + ' style="color: #f2f2f2;">' + att.County + ', ' + att.State + '</a>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.County + ', ' + att.State + '</div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
-            popupBody += '<div id="popupBody" class="row">'
+            popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
+                +att.btaaURL + '" style="color: black;">Browser ' + att.County + ' geospatial datasets</a></div>';
             for (var i = 0; i < att.Title.length; i++) {
-                popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] + '" style="color: black;">' + att.Title[i] +
-                    '</a></div>';
+                popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
+                    att.sourceURL[i] + '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
             }
             popupBody += '</div>'
             $('#popupTable').append(popupBody);
@@ -114,12 +116,6 @@ $(document).ready(function() {
         })
     }
 
-    // Close popup and zoom out
-    $('#btnClose').click(function() {
-        mymap.setView([43, -84], 5);
-        $('#popupTemplate').hide().fadeOut();
-    });
-
 
     /********** ActiveCities Functions **********/
     function returnCityPoint(json, latlng) {
@@ -142,15 +138,16 @@ $(document).ready(function() {
             mymap.fitBounds([e.latlng]);
             $('#popupTemplate').show();
             $('.card-header').css('background-color', '#ef8354');
-            $('#textTitle').html('<a href=' + att.btaaURL + ' style="color: #f2f2f2;">' + att.City + ', ' + att.State + '</a>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.City + ', ' + att.State + '</div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
-            popupBody += '<div id="popupBody" class="row">'
+            popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
+                att.btaaURL + '" style="color: black;">Browser ' + att.City + ' geospatial datasets</a></div>'
             for (var i = 0; i < att.Title.length; i++) {
-                popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] + '" style="color: black;">' + att.Title[i] +
-                    '</a></div>';
+                popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] +
+                    '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
             }
             popupBody += '</div>'
             $('#popupTable').append(popupBody);
@@ -159,7 +156,6 @@ $(document).ready(function() {
 
     // Close popup and zoom out
     $('#btnClose').click(function() {
-        clearMap();
         $('#popupTemplate').hide().fadeOut();
     });
 
@@ -196,6 +192,8 @@ $(document).ready(function() {
         var fcCounties = L.featureGroup(lyrFilterCounties).toGeoJSON();
         var fcCities = L.featureGroup(lyrFilterCities).toGeoJSON();
 
+        // var CityTotalRecords = fcCities.features[i].properties.totalRecords;
+
 
         var lyrCounties = L.geoJSON(fcCounties, {
             style: styleActiveCounties,
@@ -223,20 +221,21 @@ $(document).ready(function() {
         dropdownCounties = '';
         dropdownCounties += '<div id="Countymenu">';
         for (var i = 0; i < filterCounties.length; i++) {
+            var countyTotalRecords = fcCounties.features[i].properties.totalRecords;
             dropdownCounties += '<button class="dropdown-item" value="' + filterCounties[i] +
-                '">' + filterCounties[i] + '</button>';
+                '">' + filterCounties[i] + '<span class="badge ml-1"style="background-color:rgba(239,131,84,0.8);color:#fff;">' + countyTotalRecords + '</span></button>';
         }
         dropdownCounties += '</div>';
         $('#dropdownCounty').append(dropdownCounties);
-
 
 
         $('#Citymenu').remove();
         dropdownCities = '';
         dropdownCities += '<div id="Citymenu">';
         for (var i = 0; i < filterCities.length; i++) {
+            var cityTotalRecords = fcCities.features[i].properties.totalRecords;
             dropdownCities += '<button class="dropdown-item" id="Citymenu" value="' + filterCities[i] +
-                '">' + filterCities[i] + '</button>';
+                '">' + filterCities[i] + '<span class="badge ml-1"style="background-color:rgba(239,131,84,0.8);color:#fff;">' + cityTotalRecords + '</span></button>';
         }
         dropdownCities += '</div>';
         $('#dropdownCity').append(dropdownCities);
@@ -276,6 +275,8 @@ $(document).ready(function() {
 
     /********** Clear Button **********/
     $('#btnClear').click(function() {
+        $('#btnCounty').prop('disabled', true);
+        $('#btnCity').prop('disabled', true);
         clearMap();
     });
 
@@ -300,7 +301,7 @@ $(document).ready(function() {
                     colorCounty = [0].concat(intervalCounties),
                     gradesCounty = [1].concat(intervalCounties),
                     gradesCity = [1].concat(intervalCities),
-                    label = ['<h6 style="font-family: Josefin Sans, sans-serif;">Number of Records</h6><p class="mb-1">County Geoportals</p>'];
+                    label = ['<h6 style="font-family: Josefin Sans, sans-serif;">Number of Records</h6><p class="mb-1">County-hosted Data Portal</p>'];
 
                 // loop through county intervals and generate a label with a colored square for each interval
                 for (var i = 0; i < colorCounty.length - 1; i++) {
@@ -312,7 +313,7 @@ $(document).ready(function() {
                         );
                 }
 
-                label.push('<p class="mt-2 mb-1">City Geoportals</p>');
+                label.push('<p class="mt-2 mb-1">City-hosted Data Portal</p>');
 
                 // loop through city intervals and generate a label with a proportional circle for each interval
                 label.push('<div class="d-flex justify-content-between align-items-center pr-3" style="height:30px;>');

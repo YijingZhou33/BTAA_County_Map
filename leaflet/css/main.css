@@ -12,10 +12,17 @@ nav.navbar {
     padding-bottom: 6px;
 }
 
-a.navbar-brand {
+.navbar-brand a {
     color: #0088ce;
     font-family: 'EB Garamond', serif;
     font-size: x-large;
+}
+
+.navbar-brand span {
+    color: #939598;
+    font-style: italic;
+    font-family: 'EB Garamond', serif;
+    font-size: medium;
 }
 
 .nav-item .btn {
@@ -159,4 +166,47 @@ html {
 .card-header>.row>.col-md-auto,
 #popupTable>.row>.col-md-auto {
     padding: 0px;
+}
+
+
+/* About Page */
+
+#aboutModal .modal-header {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: rgba(0, 136, 206, 0.8);
+}
+
+#aboutModal .modal-title {
+    color: #f2f2f2;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+#aboutModal span {
+    color: #f2f2f2;
+}
+
+#aboutModal .modal-body {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+#aboutModal .modal-body .aboutTitle {
+    font-family: 'Overpass', sans-serif;
+    font-weight: 600;
+    color: black;
+    font-size: 1rem;
+    padding-top: 12px;
+}
+
+#aboutModal .modal-body {
+    padding-top: 0px;
+    font-family: 'Overpass', sans-serif;
+    font-weight: 400;
+    color: #939598;
+    font-size: 0.85rem;
+}
+
+#aboutModal .modal-body a {
+    color: #0088ce;
 }
