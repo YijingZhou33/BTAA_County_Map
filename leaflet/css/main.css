@@ -134,6 +134,7 @@ html {
     margin-left: 20px;
     padding: 0;
     display: none;
+    width: max-content;
 }
 
 .card-header {
@@ -149,6 +150,7 @@ html {
 #popupTable {
     padding-top: 12px;
     padding-bottom: 4px;
+    padding-left: 12px;
 }
 
 #popupBody {
@@ -164,7 +166,7 @@ html {
 }
 
 .card-header>.row>.col-md-auto,
-#popupTable>.row>.col-md-auto {
+#popupTable .col-md-auto {
     padding: 0px;
 }
 
@@ -209,4 +211,13 @@ html {
 
 #aboutModal .modal-body a {
     color: #0088ce;
+}
+
+
+/* PlaceName Panel */
+
+.place {
+    padding: 12px;
+    padding-right: 0px;
+    width: 185px;
 }

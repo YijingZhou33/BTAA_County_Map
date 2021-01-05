@@ -11,6 +11,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,700;1,600&family=Josefin+Sans:wght@600&family=Overpass:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" data-auto-replace-svg="nest"></script>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="src/jquery-3.5.1.min.js"></script>
@@ -28,7 +30,7 @@
         <nav class="navbar navbar-expand-sm">
             <div class="container-fluid">
                 <div class="navbar-brand">
-                    <img src="src/logo.png" class="mr-2" style="width: 5%;">
+                    <img src="src/image/logo.png" class="mr-2" style="width: 5%;">
                     <a href="https://geo.btaa.org/" class="mr-2">Open Geodata from Counties & Cities</a>
                     <span>Big Ten Academic Alliance Region</span>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
@@ -143,12 +145,12 @@
 
 
     <!-- Popup Template -->
-    <div id="popupTemplate" class="w-25 card fixed-bottom">
+    <div id="popupTemplate" class="card fixed-bottom">
         <div class="card-header">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto" id="textTitle">
                 </div>
-                <div class="col-md-auto ml-auto ">
+                <div class="col-md-auto ml-auto">
                     <button type="button" id="btnClose" class="close" aria-label="Close">
                         <span style="color:#f2f2f2;">&times;</span>
                     </button>

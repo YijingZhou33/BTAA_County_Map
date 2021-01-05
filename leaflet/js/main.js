@@ -13,8 +13,8 @@ var intervalCounties;
 var paneCities;
 var paneCounties;
 var popupTable;
-var legendCounties;
-var legendCities;
+var legendPanel;
+var infoPanel;
 var styleCounties;
 var styleCities;
 var dropdownCounties;
@@ -81,18 +81,19 @@ $(document).ready(function() {
             mymap.fitBounds(e.target.getBounds());
             $('#popupTemplate').show();
             $('.card-header').css("background-color", att.Style.Color);
-            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.County + ', ' + att.State +
-                '<span class="badge ml-2"style="background-color:#f2f2f2;color:' + att.Style.Color + ';">' + att.totalRecords + '</span></div>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.County + ', ' + att.State + '</div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
 
-            popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                att.btaaURL + '" style="color: black;">Browse ' + att.County + ' geospatial datasets</a></div>';
+            popupBody += '<div id="popupBody"><div class="col-md-auto " style="margin-bottom:8px;"><a href="' +
+                att.btaaURL + '" style="color: black;">Browse ' + att.County + ' geospatial datasets</a><span class="badge ml-1"style="color:#f2f2f2;background-color:' +
+                att.Style.Color + ';">' + att.totalRecords + '</span></div>';
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                    att.sourceURL[i] + '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
+                    att.sourceURL[i] + '" style="color: black;">Visit ' + att.Title[i] + ' website</a><i class="fas fa-external-link-alt ml-1" style="color:' +
+                    att.Style.Color + '"></i></div>';
             }
             popupBody += '</div>'
             $('#popupTable').append(popupBody);
@@ -110,12 +111,16 @@ $(document).ready(function() {
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                 feature.bringToFront();
             }
+
+            infoHoverOver(att);
         });
 
         // Mouseout event: dehighlight the selected feature
         lyr.on('mouseout', function(e) {
             lyrActiveCounties.resetStyle(e.target);
-        })
+
+            inforMoveOut();
+        });
     }
 
 
@@ -139,20 +144,30 @@ $(document).ready(function() {
             mymap.fitBounds([e.latlng]);
             $('#popupTemplate').show();
             $('.card-header').css('background-color', '#ef8354');
-            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.City + ', ' + att.State +
-                '<span class="badge ml-2"style="background-color:#f2f2f2;color:#ef8354;">' + att.totalRecords + '</span></div>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.City + ', ' + att.State + '</div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
-            popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                att.btaaURL + '" style="color: black;">Browse ' + att.City + ' geospatial datasets</a></div>';
+            popupBody += '<div id="popupBody"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
+                att.btaaURL + '" style="color: black;">Browse ' + att.City + ' geospatial datasets</a>' +
+                '<span class="badge ml-1" style="background-color:#ef8354;color:#f2f2f2;">' + att.totalRecords + '</span></div>';
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] +
-                    '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
+                    '" style="color: black;">Visit ' + att.Title[i] + ' website</a><i class="fas fa-external-link-alt ml-1" style="color:#ef8354;"></i></div>';
             }
             popupBody += '</div>'
             $('#popupTable').append(popupBody);
+        });
+
+        // Mouseover event: highlight the selected feature
+        lyr.on('mouseover', function() {
+            infoHoverOver(att);
+        });
+
+        // Mouseout event: dehighlight the selected feature
+        lyr.on('mouseout', function() {
+            inforMoveOut();
         });
     }
 
@@ -293,9 +308,9 @@ $(document).ready(function() {
             styleCities = data['city'];
             getStyle(styleCities, intervalCities, sizeCities)
 
-            legendCounties = L.control({ position: 'bottomright' });
+            legendPanel = L.control({ position: 'bottomright' });
 
-            legendCounties.onAdd = function() {
+            legendPanel.onAdd = function() {
 
                 var div = L.DomUtil.create('div', 'info legend p-3'),
                     colorCounty = [0].concat(intervalCounties),
@@ -330,7 +345,7 @@ $(document).ready(function() {
                 return div;
             };
 
-            legendCounties.addTo(mymap);
+            legendPanel.addTo(mymap);
         }
     });
 
@@ -356,6 +371,32 @@ $(document).ready(function() {
             sizeCities[0];
     }
 
+
+    /********** Custom Legend **********/
+    infoPanel = L.control({ position: 'topright' });
+    infoPanel.onAdd = function() {
+        var div = L.DomUtil.create('div', 'info legend place');
+        div.innerHTML = '<h6 style="font-family: Josefin Sans, sans-serif;">Counties & Cities</h6><p id="placeName" style="color:#939598;">Hover over a place</p>';
+        inforMoveOut();
+        return div;
+    };
+
+    function infoHoverOver(att) {
+        $('#placeName').empty();
+        if (att.County) {
+            $('#placeName').html('<p style="color:rgb(0,136,206)">' + att.County + ', ' + att.State + '</p>');
+        } else {
+            $('#placeName').html('<p style="color:rgb(239,131,84)">' + att.City + ', ' + att.State + '</p>');
+        }
+
+    }
+
+    function inforMoveOut() {
+        $('#placeName').empty();
+        $('#placeName').text('Hover over a place');
+    }
+
+    infoPanel.addTo(mymap);
 
     /********** General Functions **********/
 
