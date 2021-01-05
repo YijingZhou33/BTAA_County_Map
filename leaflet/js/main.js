@@ -81,13 +81,15 @@ $(document).ready(function() {
             mymap.fitBounds(e.target.getBounds());
             $('#popupTemplate').show();
             $('.card-header').css("background-color", att.Style.Color);
-            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.County + ', ' + att.State + '</div>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.County + ', ' + att.State +
+                '<span class="badge ml-2"style="background-color:#f2f2f2;color:' + att.Style.Color + ';">' + att.totalRecords + '</span></div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
+
             popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                +att.btaaURL + '" style="color: black;">Browse ' + att.County + ' geospatial datasets</a></div>';
+                att.btaaURL + '" style="color: black;">Browse ' + att.County + ' geospatial datasets</a></div>';
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
                     att.sourceURL[i] + '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
@@ -132,19 +134,19 @@ $(document).ready(function() {
 
     function processActiveCities(json, lyr) {
         var att = json.properties;
-
         // Click event: show popup 
         lyr.on('click', function(e) {
             mymap.fitBounds([e.latlng]);
             $('#popupTemplate').show();
             $('.card-header').css('background-color', '#ef8354');
-            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.City + ', ' + att.State + '</div>');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.City + ', ' + att.State +
+                '<span class="badge ml-2"style="background-color:#f2f2f2;color:#ef8354;">' + att.totalRecords + '</span></div>');
             if ($('#popupBody')) {
                 $('#popupBody').remove();
                 popupBody = '';
             }
             popupBody += '<div id="popupBody" class="row"><div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
-                att.btaaURL + '" style="color: black;">Browse ' + att.City + ' geospatial datasets</a></div>'
+                att.btaaURL + '" style="color: black;">Browse ' + att.City + ' geospatial datasets</a></div>';
             for (var i = 0; i < att.Title.length; i++) {
                 popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' + att.sourceURL[i] +
                     '" style="color: #505050;">Visit ' + att.Title[i] + ' website</a></div>';
@@ -192,8 +194,6 @@ $(document).ready(function() {
         var fcCounties = L.featureGroup(lyrFilterCounties).toGeoJSON();
         var fcCities = L.featureGroup(lyrFilterCities).toGeoJSON();
 
-        // var CityTotalRecords = fcCities.features[i].properties.totalRecords;
-
 
         var lyrCounties = L.geoJSON(fcCounties, {
             style: styleActiveCounties,
@@ -223,7 +223,7 @@ $(document).ready(function() {
         for (var i = 0; i < filterCounties.length; i++) {
             var countyTotalRecords = fcCounties.features[i].properties.totalRecords;
             dropdownCounties += '<button class="dropdown-item" value="' + filterCounties[i] +
-                '">' + filterCounties[i] + '<span class="badge ml-1"style="background-color:rgba(239,131,84,0.8);color:#fff;">' + countyTotalRecords + '</span></button>';
+                '">' + filterCounties[i] + '</button>';
         }
         dropdownCounties += '</div>';
         $('#dropdownCounty').append(dropdownCounties);
@@ -235,7 +235,7 @@ $(document).ready(function() {
         for (var i = 0; i < filterCities.length; i++) {
             var cityTotalRecords = fcCities.features[i].properties.totalRecords;
             dropdownCities += '<button class="dropdown-item" id="Citymenu" value="' + filterCities[i] +
-                '">' + filterCities[i] + '<span class="badge ml-1"style="background-color:rgba(239,131,84,0.8);color:#fff;">' + cityTotalRecords + '</span></button>';
+                '">' + filterCities[i] + '</button>';
         }
         dropdownCities += '</div>';
         $('#dropdownCity').append(dropdownCities);
