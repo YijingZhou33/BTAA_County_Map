@@ -1,5 +1,5 @@
 # Mapping Available City and County Geodata in Big Ten Academic Alliance Region
-The primary purpose of this interactive map is to show what counties and cities [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. The Python scripts is used to keep track of open data portals along with the number of total records and transform metadata file formats between CSV and JSON. 
+The primary purpose of this interactive map is to show what counties and cities [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. The Python scripts are used to keep track of open data portals along with the number of total records and transform metadata file formats between CSV and JSON. 
 
 There are two versions using different techniques: one is built upon **ArcGIS** applications while the other is based on open source JavaScript library **Leaflet**.
 
