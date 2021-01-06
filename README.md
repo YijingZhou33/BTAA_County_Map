@@ -1,16 +1,7 @@
-# BTAA County Map
-
-The primary purpose of this interactive map is to show what states and counties [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. Ideally it will be incorporated into the geoportal itself to be used as an alternative spatial search tool. 
+# Mapping Available City and County Geodata in Big Ten Academic Alliance Region
+The primary purpose of this interactive map is to show what counties and cities [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. The Python scripts is used to keep track of open data portals along with the number of total records and transform metadata file formats between CSV and JSON. 
 
 There are two versions using different techniques: one is built upon **ArcGIS** applications while the other is based on open source JavaScript library **Leaflet**.
-
-
-
-## Functionality
-
-### 1. Automating the data updating process
-
-One of the key tasks is to keep the updating process simple. Therefore, users only needs to keep track of the **Geoportal.csv** storing counties' FIPs and search links. 
 
 |                 | V1: ArcGIS                               | V2: Leaflet |
 | --------------- | ---------------------------------------- | ----------- |
@@ -18,21 +9,41 @@ One of the key tasks is to keep the updating process simple. Therefore, users on
 | Raw data format | Feature class                            | GeoJSON     |
 | Outcome         | Shapefiles needs to be published on AGOL | GeoJSON     |
 
-### 2. Mapmaking
-
-The version 1 utilizes the **ArcGIS API for JavaScript** to display the areas while the version 2 uses the **Leaflet** library. Users will be relocated to the landing page via popup. 
-
+*<a href="https://yijingzhou33.github.io/BTAA_County_Map/leaflet/">Live Demo [Leaflet]</a>*
+> Note that all the instructions is based on Leaflet version. 
 
 
-## Getting started
+#### How to use
 
-To get started you could simply clone the repository and run a local testing server. 
+1. Edit `allCities.csv` and `allCounties.csv` 
+2. Run Python Scripts to produce `activeCities.json`, `activeCounties.json` and `legend.json`
+3. Push new changes to GitHub
 
-1. Navigate to the directory that stores the repository
+## data folder
 
-2. Open the *Powershell Prompt* and type in:
+- ### CSV files - *allCities.csv & allCounties.csv* 
 
-   `python -m SimpleHTTPServer 8000`
+  These two spreadsheets (<a href="https://docs.google.com/spreadsheets/d/1LgSkQpP_Xy5_Rz-Qm8PWvCISv8fYbM5RptRleFaD-4Q/edit#gid=1072617325">Google Drive</a>) require regular maintenance. The schema borrows many fields from <a href="https://github.com/geoblacklight/geoblacklight/wiki/GeoBlacklight-1.0-Metadata-Elements">GeoBlacklight Metadata Elements, Version 1.0</a>. The main difference is that  ***allCities.csv*** includes `bounding Box` used to calculate the coordinates of city position. 
 
-3. Go to the browser and type in the URL `https://localhost:8000`
+- ### JSON - *counties.json* 
+
+  It is formatted as GeoJSON to encode geographic data structures for all counties in Big Ten Academic Alliance Region.  
+
+## Python Scripts
+
+- ### harvest.ipynb [recommended]
+
+  This script should be opened with Anaconda3 Jupyter Notebook (running on Python 3). It will  produce 3 json files stored in **json folder**. Reference comments for further explanation. 
+
+  ​	**1. activeCities.json**
+
+  ​	**2. activeCounties.json**
+
+  ​	**3. legend.json**
+
+- ### harvest.py
+
+
+
+
 
