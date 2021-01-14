@@ -28,108 +28,107 @@
     <div class="d-flex flex-column vh-100">
         <!-- Filter Template -->
         <nav class="navbar navbar-expand-sm">
-            <div class="container-fluid">
-                <div class="navbar-brand">
-                    <img src="src/image/logo.png" class="mr-2" style="width: 5%;">
-                    <a href="https://geo.btaa.org/" class="mr-2">Open Geodata from Counties & Cities</a>
-                    <span>Big Ten Academic Alliance Region</span>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-                        <span class="navbar-toggler-icon"></span>
-                      </button>
-                </div>
+            <div class="navbar-brand">
+                <img src="src/image/logo.png" class="mr-2" style="width: 5%;">
+                <a href="https://geo.btaa.org/" class="mr-2">Open Geodata from States, Counties & Cities</a>
+                <span>Big Ten Academic Alliance Region</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+            </div>
 
-                <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                    <div class="navbar-nav ml-auto">
-                        <!-- Layer Filter -->
-                        <div class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown">
-                                    Layer
-                                </button>
-                                <div class="dropdown-menu">
-                                    <button class="dropdown-item" id="btnAllLayer">All Data Portals</button>
-                                    <div class="dropdown-divider"></div>
-                                    <button class="dropdown-item" id="btnCountyLayer">County-hosted Data Portals</button>
-                                    <button class="dropdown-item" id="btnCityLayer">City-hosted Data Portals</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- State Filter -->
-                        <div class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown" id="btnState">
-                                    State
-                                </button>
-                                <div class="dropdown-menu" id="dropdownState">
-                                    <button class="dropdown-item" value="Illinois">Illinois</button>
-                                    <button class="dropdown-item" value="Indiana">Indiana</button>
-                                    <button class="dropdown-item" value="Iowa">Iowa</button>
-                                    <button class="dropdown-item" value="Maryland">Maryland</button>
-                                    <button class="dropdown-item" value="Michigan">Michigan</button>
-                                    <button class="dropdown-item" value="Minnesota">Minnesota</button>
-                                    <button class="dropdown-item" value="Nebraska">Nebraska</button>
-                                    <button class="dropdown-item" value="Ohio">Ohio</button>
-                                    <button class="dropdown-item" value="Pennsylvania">Pennsylvania</button>
-                                    <button class="dropdown-item" value="Wisconsin">Wisconsin</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- County Filter -->
-                        <div class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-block dropdown-toggle" id="btnCounty" type="button" data-toggle="dropdown" disabled>
-                                    County
-                                </button>
-                                <div class="dropdown-menu" id="dropdownCounty">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- City Filter -->
-                        <div class="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-block dropdown-toggle" id="btnCity" type="button" data-toggle="dropdown" disabled>
-                                    City
-                                </button>
-                                <div class="dropdown-menu" id="dropdownCity">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- City Filter -->
-                        <div class="nav-item">
-                            <button class="btn btn-block" id="btnClear" type="button">
-                                Clear
+            <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <div class="navbar-nav ml-auto">
+                    <!-- Layer Filter -->
+                    <div class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+                                Layer
                             </button>
+                            <div class="dropdown-menu">
+                                <button class="dropdown-item" id="btnAllLayer" value="allLayer">All Data Portals</button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item" id="btnStateLayer" value="stateLayer">State-hosted Data Portals</button>
+                                <button class="dropdown-item" id="btnCountyLayer" value="countyLayer">County-hosted Data Portals</button>
+                                <button class="dropdown-item" id="btnCityLayer" value="cityLayer">City-hosted Data Portals</button>
+                            </div>
                         </div>
-                        <!-- About -->
-                        <div class="nav-item">
-                            <button class="btn btn-block" id="btnAbout" type="button" data-toggle="modal" data-target="#aboutModal">
-                                About
+                    </div>
+                    <!-- State Filter -->
+                    <div class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-block dropdown-toggle" type="button" data-toggle="dropdown" id="btnState">
+                                State
                             </button>
-                            <!-- About Content -->
-                            <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModal" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="modal-title" id="aboutModal">About</div>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="aboutTitle">About this map</div>
-                                            This map displays the known counties and cities in the
-                                            <a href="https://sites.google.com/umn.edu/btaa-gdp/about">BTAA Geoportal region</a> that publish open geospatial data. Additional portals and data are added regularly. To report missing data portals,
-                                            <a href="https://geo.btaa.org/feedback">contact us here</a>.
-                                            <div class="aboutTitle">How to use</div>
-                                            Click on a county or city to browse the records in the BTAA Geoportal and to visit the source website. Use the menu at the top to filter the map display.
-                                            <div class="aboutTitle">Why certain sites aren't included in this map</div>
-                                            <ol style="margin-bottom:0px;">For inclusion in this map, the data must:
-                                                <li class="ml-5">have an open license or open status</li>
-                                                <li class="ml-5">be accessible for free</li>
-                                                <li class="ml-5">be downloadable as discrete layers and not just viewable from inside an online web map or database application</li>
-                                                <li class="ml-5">have been created or published by a city or county government entity</li>
-                                            </ol>
-                                        </div>
+                            <div class="dropdown-menu" id="dropdownState">
+                                <button class="dropdown-item" value="Illinois">Illinois</button>
+                                <button class="dropdown-item" value="Indiana">Indiana</button>
+                                <button class="dropdown-item" value="Iowa">Iowa</button>
+                                <button class="dropdown-item" value="Maryland">Maryland</button>
+                                <button class="dropdown-item" value="Michigan">Michigan</button>
+                                <button class="dropdown-item" value="Minnesota">Minnesota</button>
+                                <button class="dropdown-item" value="Nebraska">Nebraska</button>
+                                <button class="dropdown-item" value="Ohio">Ohio</button>
+                                <button class="dropdown-item" value="Pennsylvania">Pennsylvania</button>
+                                <button class="dropdown-item" value="Wisconsin">Wisconsin</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- County Filter -->
+                    <div class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-block dropdown-toggle" id="btnCounty" type="button" data-toggle="dropdown" disabled>
+                                County
+                            </button>
+                            <div class="dropdown-menu" id="dropdownCounty">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- City Filter -->
+                    <div class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-block dropdown-toggle" id="btnCity" type="button" data-toggle="dropdown" disabled>
+                                City
+                            </button>
+                            <div class="dropdown-menu" id="dropdownCity">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- City Filter -->
+                    <div class="nav-item">
+                        <button class="btn btn-block" id="btnClear" type="button">
+                            Clear
+                        </button>
+                    </div>
+                    <!-- About -->
+                    <div class="nav-item">
+                        <button class="btn btn-block" id="btnAbout" type="button" data-toggle="modal" data-target="#aboutModal">
+                            About
+                        </button>
+                        <!-- About Content -->
+                        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="modal-title" id="aboutModal">About</div>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="aboutTitle">About this map</div>
+                                        This map displays the known states, counties and cities in the
+                                        <a href="https://sites.google.com/umn.edu/btaa-gdp/about">BTAA Geoportal region</a> that publish open geospatial data. Additional portals and data are added regularly. To report missing data portals,
+                                        <a href="https://geo.btaa.org/feedback">contact us here</a>.
+                                        <div class="aboutTitle">How to use</div>
+                                        Click on a state, county or city to browse the records in the BTAA Geoportal and to visit the source website. Use the menu at the top to filter the map display.
+                                        <div class="aboutTitle">Why certain sites aren't included in this map</div>
+                                        <ol style="margin-bottom:0px;">For inclusion in this map, the data must:
+                                            <li class="ml-5">have an open license or open status</li>
+                                            <li class="ml-5">be accessible for free</li>
+                                            <li class="ml-5">be downloadable as discrete layers and not just viewable from inside an online web map or database application</li>
+                                            <li class="ml-5">have been created or published by a city, county or state government entity</li>
+                                        </ol>
                                     </div>
                                 </div>
                             </div>

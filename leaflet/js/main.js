@@ -1,17 +1,19 @@
+var stateJSON;
 var countyJSON;
 var cityJSON;
 var legendJSON;
-var actionDateJSON;
-var actionDate;
 var mymap;
+var lyrActiveStates;
 var lyrActiveCities;
 var lyrActiveCounties;
+var lyrFilterStates;
 var lyrFilterCounties;
 var lyrFilterCities;
 var paletteCounties;
 var intervalCounties;
 var paneCities;
 var paneCounties;
+var paneStates;
 var popupTable;
 var legendPanel;
 var infoPanel;
@@ -30,6 +32,7 @@ var aboutContainer;
 $(document).ready(function() {
 
     /********** File Path **********/
+    stateJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/activeStates.json';
     countyJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/activeCounties.json';
     cityJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/activeCities.json';
     legendJSON = 'https://yijingzhou33.github.io/BTAA_County_Map/leaflet/json/legend.json';
@@ -39,11 +42,17 @@ $(document).ready(function() {
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={access_token}', {
         maxZoom: 7,
         minZoom: 5,
-        id: 'yjzhou0303/ckgmxe2xh0gzx19pc66ekbyoo',
+        id: 'yjzhou0303/ckjw3mxok0e5517qa7x8rtlo8',
         tileSize: 512,
         access_token: 'pk.eyJ1IjoieWp6aG91MDMwMyIsImEiOiJja2ZwZDhoNmMxd2I3MnFxdXVyZW8waTc1In0.1Zi4Zr1NDMHaqe1chkq_Og',
         zoomOffset: -1,
         attribution: '<a href="https://geo.btaa.org/">BTAA Geoportal</a>'
+    }).addTo(mymap);
+
+    /********** Layer ActiveStates **********/
+    lyrActiveStates = new L.GeoJSON.AJAX(stateJSON, {
+        style: styleActiveStates,
+        onEachFeature: processActiveStates
     }).addTo(mymap);
 
 
@@ -60,6 +69,53 @@ $(document).ready(function() {
         onEachFeature: processActiveCities
     }).addTo(mymap);
 
+
+    /********** ActiveStates Functions **********/
+    function styleActiveStates() {
+        return {
+            pane: 'states',
+            fillColor: '#939598',
+            color: '#f2f2f2',
+            weight: 1,
+            fillOpacity: 0.7
+        }
+    }
+
+    function processActiveStates(json, lyr) {
+        var att = json.properties;
+
+        // Click event: show popup 
+        lyr.on('click', function(e) {
+            mymap.fitBounds(e.target.getBounds());
+            $('#popupTemplate').show();
+            $('.card-header').css("background-color", '#939598');
+            $('#textTitle').html('<div style="color: #f2f2f2;">' + att.State + '</div>');
+            if ($('#popupBody')) {
+                $('#popupBody').remove();
+                popupBody = '';
+            }
+
+            popupBody += '<div id="popupBody"><div class="col-md-auto " style="margin-bottom:8px;"><a href="' +
+                att.btaaURL + '" style="color: black;">Browse ' + att.State + ' geospatial datasets</a><span class="badge ml-1"style="color:#f2f2f2;background-color:#939598;">' +
+                att.totalRecords + '</span></div>';
+            for (var i = 0; i < att.Title.length; i++) {
+                popupBody += '<div class="col-md-auto" style="margin-bottom:8px;"><a href="' +
+                    att.sourceURL[i] + '" style="color: black;">Visit ' + att.Title[i] + ' website</a><i class="fas fa-external-link-alt ml-1" style="color:#939598"></i></div>';
+            }
+            popupBody += '</div>'
+            $('#popupTable').append(popupBody);
+        });
+
+        // Mouseover event: highlight the selected feature
+        lyr.on('mouseover', function() {
+            infoHoverOver(att);
+        });
+
+        // Mouseout event: dehighlight the selected feature
+        lyr.on('mouseout', function() {
+            inforMoveOut();
+        });
+    }
 
     /********** ActiveCounties Functions **********/
     function styleActiveCounties(json) {
@@ -179,64 +235,67 @@ $(document).ready(function() {
 
     /********** Set Layer Order **********/
     // Make sure city layer on top of county layer
-    paneCities = mymap.createPane('cities');
+    paneStates = mymap.createPane('states');
     paneCounties = mymap.createPane('counties');
-    mymap.getPane(paneCounties).style.zIndex = 200;
-    mymap.getPane(paneCities).style.zIndex = 201;
+    paneCities = mymap.createPane('cities');
+    mymap.getPane(paneStates).style.zIndex = 200;
+    mymap.getPane(paneCounties).style.zIndex = 201;
+    mymap.getPane(paneCities).style.zIndex = 202;
 
 
     /********** Layer Filter **********/
     function layerToggle(btn, lyrGroup) {
         $(btn).click(function() {
+            var val = $(this).val();
+            $(this).data('clicked', true);
             clearLayers();
             lyrGroup.forEach(function(lyr) {
                 lyr.addTo(mymap);
-            })
+            });
+
+            mymap.setView([43, -84], 5);
         });
     }
 
-    layerToggle('#btnAllLayer', [lyrActiveCities, lyrActiveCounties]);
+    layerToggle('#btnAllLayer', [lyrActiveStates, lyrActiveCities, lyrActiveCounties]);
+    layerToggle('#btnStateLayer', [lyrActiveStates]);
     layerToggle('#btnCountyLayer', [lyrActiveCounties]);
     layerToggle('#btnCityLayer', [lyrActiveCities]);
 
 
-    /********** State Filter **********/
+    /********** All Filter **********/
     $('#dropdownState > button').click(function() {
         clearLayers();
         var val = $(this).val();
+        lyrFilterStates = returnLayersByAttribute(lyrActiveStates, 'State', val);
         lyrFilterCounties = returnLayersByAttribute(lyrActiveCounties, 'State', val);
         lyrFilterCities = returnLayersByAttribute(lyrActiveCities, 'State', val);
+        var fcStates = L.featureGroup(lyrFilterStates).toGeoJSON();
         var fcCounties = L.featureGroup(lyrFilterCounties).toGeoJSON();
         var fcCities = L.featureGroup(lyrFilterCities).toGeoJSON();
 
+        var lyrStates = L.geoJSON(fcStates, {
+            style: styleActiveStates,
+            onEachFeature: processActiveStates
+        });
 
         var lyrCounties = L.geoJSON(fcCounties, {
             style: styleActiveCounties,
             onEachFeature: processActiveCounties
-        }).addTo(mymap);
+        });
 
         var lyrCities = L.geoJSON(fcCities, {
             pointToLayer: returnCityPoint,
             onEachFeature: processActiveCities
-        }).addTo(mymap);
-
-
-        if (fcCounties['features'].length) {
-            mymap.fitBounds(lyrCounties.getBounds().pad(1));
-        } else {
-            mymap.setView([43, -84], 5);
-        }
-
+        });
 
         filterCounties = filterGroup(fcCounties, 'County', '#btnCounty');
         filterCities = filterGroup(fcCities, 'City', '#btnCity');
-
 
         $('#Countymenu').remove();
         dropdownCounties = '';
         dropdownCounties += '<div id="Countymenu">';
         for (var i = 0; i < filterCounties.length; i++) {
-            var countyTotalRecords = fcCounties.features[i].properties.totalRecords;
             dropdownCounties += '<button class="dropdown-item" value="' + filterCounties[i] +
                 '">' + filterCounties[i] + '</button>';
         }
@@ -248,19 +307,47 @@ $(document).ready(function() {
         dropdownCities = '';
         dropdownCities += '<div id="Citymenu">';
         for (var i = 0; i < filterCities.length; i++) {
-            var cityTotalRecords = fcCities.features[i].properties.totalRecords;
             dropdownCities += '<button class="dropdown-item" id="Citymenu" value="' + filterCities[i] +
                 '">' + filterCities[i] + '</button>';
         }
         dropdownCities += '</div>';
         $('#dropdownCity').append(dropdownCities);
 
+
+        if ($('#btnStateLayer').data('clicked')) {
+            clearLayers();
+            $('#btnCounty').prop('disabled', true);
+            $('#btnCity').prop('disabled', true);
+            $('#btnStateLayer').data('clicked', false);
+            lyrStates.addTo(mymap);
+            mymap.fitBounds(lyrStates.getBounds());
+        } else if ($('#btnCountyLayer').data('clicked')) {
+            clearLayers();
+            $('#btnCity').prop('disabled', true);
+            $('#btnCountyLayer').data('clicked', false);
+            lyrCounties.addTo(mymap);
+            mymap.fitBounds(lyrCounties.getBounds());
+        } else if ($('#btnCityLayer').data('clicked')) {
+            clearLayers();
+            $('#btnCounty').prop('disabled', true);
+            $('#btnCityLayer').data('clicked', false);
+            lyrCities.addTo(mymap);
+            mymap.fitBounds(lyrCities.getBounds());
+        } else {
+            clearLayers();
+            $('#btnAllLayer').data('clicked', false);
+            lyrStates.addTo(mymap);
+            lyrCounties.addTo(mymap);
+            lyrCities.addTo(mymap);
+            mymap.fitBounds(lyrStates.getBounds().pad(1));
+        }
     });
 
 
     /********** County Filter **********/
     $('#dropdownCounty').on('click', 'button', function() {
         clearLayers();
+        $('#btnCity').prop('disabled', true);
         var val = $(this).val();
         var target = filterLayer(lyrFilterCounties, 'County', val);
 
@@ -276,6 +363,7 @@ $(document).ready(function() {
     /********** City Filter **********/
     $('#dropdownCity').on('click', 'button', function() {
         clearLayers();
+        $('#btnCounty').prop('disabled', true);
         var val = $(this).val();
         var target = filterLayer(lyrFilterCities, 'City', val);
 
@@ -376,7 +464,7 @@ $(document).ready(function() {
     infoPanel = L.control({ position: 'topright' });
     infoPanel.onAdd = function() {
         var div = L.DomUtil.create('div', 'info legend place');
-        div.innerHTML = '<h6 style="font-family: Josefin Sans, sans-serif;">Counties & Cities</h6><p id="placeName" style="color:#939598;">Hover over a place</p>';
+        div.innerHTML = '<h6 style="font-family: Josefin Sans, sans-serif;">Place Name</h6><p id="placeName" style="color:#939598;">Hover over a place</p>';
         inforMoveOut();
         return div;
     };
@@ -385,8 +473,10 @@ $(document).ready(function() {
         $('#placeName').empty();
         if (att.County) {
             $('#placeName').html('<p style="color:rgb(0,136,206)">' + att.County + ', ' + att.State + '</p>');
-        } else {
+        } else if (att.City) {
             $('#placeName').html('<p style="color:rgb(239,131,84)">' + att.City + ', ' + att.State + '</p>');
+        } else {
+            $('#placeName').html('<p style="color:rgb(147,149,152)">' + att.State + '</p>');
         }
 
     }
@@ -451,6 +541,7 @@ $(document).ready(function() {
 
     function clearMap() {
         clearLayers();
+        lyrActiveStates.addTo(mymap);
         lyrActiveCities.addTo(mymap);
         lyrActiveCounties.addTo(mymap);
         mymap.setView([43, -84], 5);

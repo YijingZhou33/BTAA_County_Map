@@ -26,16 +26,147 @@ import mapclassify
 
 
 ####### Set file path #######
+stategeoportals = os.path.join('data', 'allStates.csv')
 countygeoportals = os.path.join('data', 'allCounties.csv')
 citygeoportals = os.path.join('data', 'allCities.csv')
+statejson = os.path.join('data', 'states.json')
 countyjson = os.path.join('data', 'counties.json')
+activestates = os.path.join('json', 'activeStates.json')
 activecounties = os.path.join('json', 'activeCounties.json')
 activecities = os.path.join('json', 'activeCities.json')
 legendjson = os.path.join('json', 'legend.json')
 
 
 """
-    Part 1: County Geoportals GeoJSON
+    Part 1: State Geoportals GeoJSON
+"""
+####### Format state name in state geoportals spreadsheet allStates.csv #######
+df_csv = pd.read_csv(stategeoportals)
+
+
+####### Etract total records number from BTAA Geoportal search page ####### 
+def totalRecords(df):
+    totalrecords = []
+    for _, row in df.iterrows():
+        url = row['btaaURL']        
+        ## Start session and get the search page
+        session = requests.Session()
+        response = session.get(url)
+        ## Parse only part of the page (<meta> tag) for better performance using SoupStrainer and lxml
+        strainer = SoupStrainer('meta', attrs={'name': 'totalResults'})
+        soup = BeautifulSoup(response.content, 'lxml', parse_only=strainer)
+        ## The find() method looks through <meta> tag¡¯s descendants and retrieves one result with attribute 'name'.
+        meta_tag = soup.find('meta', attrs={'name': 'totalResults'})
+        ## Grab the content inside the <meta> tag that matches the filter
+        totalrecord = meta_tag.get('content')
+        totalrecords.append(totalrecord)
+    return totalrecords
+
+df_csv['totalRecords'] = totalRecords(df_csv)
+
+
+####### Inspect the numinum number of total records ####### 
+
+## If it equals to 0, meaning the landing page is 404 Not Found. 
+## Go back to check if the identifier is still active.
+def check_totalRecords(df):
+    df['totalRecords'] = df['totalRecords'].astype(int)
+    if df['totalRecords'].min() == 0:
+        return df[df['totalRecords']==0]
+    else:
+        print('> State Geoportal Codes all valid!')
+
+check_totalRecords(df_csv)
+
+
+####### Group dataframe rows into list by geoportal sites ####### 
+def aggregate_to_array(data):
+    groupItems = ['stateCode', 'Title', 'sourceURL', 'totalRecords']
+    for i in range(len(groupItems)):
+        data[groupItems[i]] = np.tile([data[groupItems[i]].values], (data.shape[0], 1)).tolist()
+    return data
+
+## Group by ['State']
+df_group = df_csv.groupby(['State']).apply(aggregate_to_array).drop_duplicates(subset=['State'])
+## Sum up the total records if there're multiple geoportals in one county
+df_group['totalRecords'] = df_group['totalRecords'].apply(lambda x: sum(int(item)for item in x))
+df_group
+
+
+####### Merge state GeoJSON and geoportal GeoJSON ####### 
+
+## Load statejson featuer properties
+state_geojson = gpd.read_file(statejson)
+state_json = json.loads(state_geojson.to_json())
+df_allState = pd.json_normalize(state_json['features'])
+
+## Change column names for further operation
+df_allState = df_allState[['properties.State', 'geometry.coordinates']].rename(
+    columns={'properties.State':'State', 'geometry.coordinates':'boundingBox'})
+
+## Join on column 'State' from left dataframe df_group
+df_merge = pd.merge(df_group, df_allState, on = 'State', how = 'left')
+
+
+####### Return rows with Nan value ####### 
+
+## Check if there exists any records doesn't include any coordinates information in the boundingBox column
+## If so, go back to allCounties.csv and manually change the county name to the one in county.json
+def check_nanrows(df):
+    if df.isnull().values.any():
+        print(df[df['boundingBox'].isnull()]) 
+        sys.exit()
+    else:
+        print('> No NULL rows')        
+check_nanrows(df_merge)
+
+
+####### Create state GeoJSON features ####### 
+def create_geojson_features(df):
+    print('> Creating state GeoJSON features...')
+    features = []
+    geometry_type = ''
+    geojson = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
+        
+    for _, row in df.iterrows():
+        if type(row['boundingBox'][0][0][0]) is float:
+            geometry_type = 'Polygon'
+        else:
+            geometry_type = 'MultiPolygon'
+            
+        feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': geometry_type, 
+                'coordinates': row['boundingBox']
+            },
+            'properties': {
+                'State': row['State'],
+                'stateCode': row['stateCode'],
+                'Title': row['Title'],
+                'sourceURL': row['sourceURL'], 
+                'btaaURL': row['btaaURL'],
+                'totalRecords': row['totalRecords']
+            }
+           }
+
+        features.append(feature)
+    return geojson
+
+data_geojson = create_geojson_features(df_merge)
+
+
+####### Write to state GeoJSON file activestates.json ####### 
+with open(activestates, 'w') as txtfile:
+    json.dump(data_geojson, txtfile)
+print('> Creating state GeoJSON file...')
+
+
+"""
+    Part 2: County Geoportals GeoJSON
 """
 ####### Format county name in county geoportals spreadsheet allCounties.csv #######
 df_csv = pd.read_csv(countygeoportals)
@@ -197,7 +328,7 @@ print('> Creating county GeoJSON file...')
 
 
 """
-    Part 2: City Geoportals GeoJSON
+    Part 3: City Geoportals GeoJSON
 """
 ####### Format city name in city geoportals spreadsheet allCities.csv #######
 df = pd.read_csv(citygeoportals)
@@ -321,7 +452,7 @@ print('> Creating city GeoJSON file...')
 
 
 """
-    Part 2: Legend JSON
+    Part 4: Legend JSON
 """
 ####### Create legend JSON features #######
 def create_legend_json(countyinterval, palette, cityinterval, size):
