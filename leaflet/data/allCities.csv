@@ -21,3 +21,5 @@ cityCode,City,State,Title,sourceURL,btaaURL,Bounding Box
 11c-01,Cincinnati,Ohio,"Open Data for Cincinnati, Ohio",http://cagis.org/Opendata/?,https://geo.btaa.org/?q=11c-01,"-84.8203,39.02153,-84.25651,39.31206"
 11c-01,Cincinnati,Ohio,Cincinnati Area Geographic Information Systems,http://cagis.org/Opendata/?,https://geo.btaa.org/?q=11c-01,"-84.8203,39.02153,-84.25651,39.31206"
 12c-01,Chicago,Illinois,City of Chicago Data Portal,https://data.cityofchicago.org,https://geo.btaa.org/?q=12c-01,"-87.940101,41.643919,-87.523984,42.023022"
+13c-01,Lincoln,Nebraska,Lincoln Open Data and Performance Management,https://data2-lincolnne.opendata.arcgis.com/,https://geo.btaa.org/?q=13c-01,"-96.80415,40.693767,-96.577307,40.900281"
+13c-02,Grand Island,Nebraska,City of Grand Island,https://data-cityofgi.opendata.arcgis.com/,https://geo.btaa.org/?q=13c-02,"-98.431455,40.854992,-98.288213,40.988881"

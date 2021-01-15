@@ -42,7 +42,7 @@ legendjson = os.path.join('json', 'legend.json')
 """
 ####### Format state name in state geoportals spreadsheet allStates.csv #######
 df_csv = pd.read_csv(stategeoportals)
-
+df_csv['btaaURL'] = df_csv['btaaURL'].apply(lambda x: x.split('-')[0])
 
 ####### Etract total records number from BTAA Geoportal search page ####### 
 def totalRecords(df):
@@ -55,7 +55,7 @@ def totalRecords(df):
         ## Parse only part of the page (<meta> tag) for better performance using SoupStrainer and lxml
         strainer = SoupStrainer('meta', attrs={'name': 'totalResults'})
         soup = BeautifulSoup(response.content, 'lxml', parse_only=strainer)
-        ## The find() method looks through <meta> tag¡¯s descendants and retrieves one result with attribute 'name'.
+        ## The find() method looks through <meta> tagï¿½ï¿½s descendants and retrieves one result with attribute 'name'.
         meta_tag = soup.find('meta', attrs={'name': 'totalResults'})
         ## Grab the content inside the <meta> tag that matches the filter
         totalrecord = meta_tag.get('content')
@@ -81,16 +81,13 @@ check_totalRecords(df_csv)
 
 ####### Group dataframe rows into list by geoportal sites ####### 
 def aggregate_to_array(data):
-    groupItems = ['stateCode', 'Title', 'sourceURL', 'totalRecords']
+    groupItems = ['stateCode', 'Title', 'sourceURL']
     for i in range(len(groupItems)):
         data[groupItems[i]] = np.tile([data[groupItems[i]].values], (data.shape[0], 1)).tolist()
     return data
 
 ## Group by ['State']
 df_group = df_csv.groupby(['State']).apply(aggregate_to_array).drop_duplicates(subset=['State'])
-## Sum up the total records if there're multiple geoportals in one county
-df_group['totalRecords'] = df_group['totalRecords'].apply(lambda x: sum(int(item)for item in x))
-df_group
 
 
 ####### Merge state GeoJSON and geoportal GeoJSON ####### 

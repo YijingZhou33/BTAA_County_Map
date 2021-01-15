@@ -202,3 +202,6 @@ countyCode,County,State,Title,sourceURL,btaaURL
 12b-17043,DuPage County,Illinois,DuPage County GIS,https://gisdata-dupage.opendata.arcgis.com,https://geo.btaa.org/?q=12b-17043
 12b-17097,Lake County,Illinois,Lake County Illinois Open Data Portal,https://data-lakecountyil.opendata.arcgis.com,https://geo.btaa.org/?q=12b-17097
 12b-17143,Peoria County,Illinois,Peoria County GIS Open Data Portal,https://data-peoriacountygis.opendata.arcgis.com,https://geo.btaa.org/?q=12b-17143
+13b-31153,Sarpy County,Nebraska,Sarpy County GIS Portal,https://gis.sarpy.com/,https://geo.btaa.org/?q=13b-31153
+13b-31055,Douglas County,Nebraska,Omaha/Douglas County GIS Open Data Portal,https://data-dogis.opendata.arcgis.com/,https://geo.btaa.org/?q=13b-31055
+13b-31079,Hall County,Nebraska,Hall County GeoHub,https://data-hcnegis.opendata.arcgis.com/,https://geo.btaa.org/?q=13b-31079

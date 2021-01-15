@@ -42,7 +42,7 @@ $(document).ready(function() {
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={access_token}', {
         maxZoom: 7,
         minZoom: 5,
-        id: 'yjzhou0303/ckjw3mxok0e5517qa7x8rtlo8',
+        id: 'yjzhou0303/ckjxmot7v1m1u18mwlwamsfkc',
         tileSize: 512,
         access_token: 'pk.eyJ1IjoieWp6aG91MDMwMyIsImEiOiJja2ZwZDhoNmMxd2I3MnFxdXVyZW8waTc1In0.1Zi4Zr1NDMHaqe1chkq_Og',
         zoomOffset: -1,
@@ -179,7 +179,6 @@ $(document).ready(function() {
         });
     }
 
-
     /********** ActiveCities Functions **********/
     function returnCityPoint(json, latlng) {
         var att = json.properties;
@@ -227,6 +226,7 @@ $(document).ready(function() {
         });
     }
 
+
     // Close popup and zoom out
     $('#btnClose').click(function() {
         $('#popupTemplate').hide().fadeOut();
@@ -246,7 +246,6 @@ $(document).ready(function() {
     /********** Layer Filter **********/
     function layerToggle(btn, lyrGroup) {
         $(btn).click(function() {
-            var val = $(this).val();
             $(this).data('clicked', true);
             clearLayers();
             lyrGroup.forEach(function(lyr) {
