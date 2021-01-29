@@ -1,4 +1,4 @@
-# Mapping Available City, County and State Geodata in Big Ten Academic Alliance Region
+# Mapping Available City, County and State Geodata in the Big Ten Academic Alliance Region
 The primary purpose of this interactive map is to show what cities, counties and states [BTAA Geoportal](https://geo.btaa.org/) is pulling data from. The Python scripts are used to keep track of open data portals along with the number of total records and transform metadata file formats between CSV and JSON. 
 
 There are two versions using different techniques: one is built upon **ArcGIS** applications while the other is based on open source JavaScript library **Leaflet**.
@@ -19,7 +19,15 @@ There are two versions using different techniques: one is built upon **ArcGIS** 
 2. Run Python Scripts to produce `activeCities.json`, `activeCounties.json`, `activeStates.json` and `legend.json`
 3. Push new changes to GitHub
 
-## data folder
+## What is TopoJSON?
+
+**<a href='https://github.com/topojson/topojson'>TopoJSON</a>** is an extension of GeoJSON storing geometry information more efficiently. Here are some main differences:
+
+1. If features sharing the same border, TopoJSON will eliminate the redundancy and only display the boundary once. 
+2. Implementing ***arc***, shared line segment, to compress geometry properties and
+3. Quantizing delta-encoding for integer coordinates
+
+## Data folder
 
 - ### CSV files - *allCities.csv & allCounties.csv & allStates.csv* 
 
@@ -27,7 +35,7 @@ There are two versions using different techniques: one is built upon **ArcGIS** 
 
 - ### JSON - *counties.json & states.json* 
 
-  It is formatted as GeoJSON to encode geographic data structures for all states and counties in Big Ten Academic Alliance Region.  
+  It is formatted as GeoJSON to encode geographic data structures for all states and counties in the Big Ten Academic Alliance Region.  
 
 ## Python Scripts
 
@@ -37,9 +45,9 @@ There are two versions using different techniques: one is built upon **ArcGIS** 
 
   ​	**1. activeCities.json**
 
-  ​	**2. activeCounties.json**
+  ​	**2. activeCounties.topo.json**
 
-  ​	**3. activeStates.json**
+  ​	**3. activeStates.topo.json**
 
   ​	**4. legend.json**
 
