@@ -23,7 +23,7 @@ There are two versions using different techniques: one is built upon **ArcGIS** 
 
 **<a href='https://github.com/topojson/topojson'>TopoJSON</a>** is an extension of GeoJSON storing geometry information more efficiently. Here are some main differences:
 
-1. If features sharing the same border, TopoJSON will eliminate the redundancy and only display the boundary once. 
+1. If features share the same border, TopoJSON will eliminate the redundancy and only display the boundary once. 
 2. Implementing ***arc***, shared line segment, to compress geometry properties and
 3. Quantizing delta-encoding for integer coordinates
 
