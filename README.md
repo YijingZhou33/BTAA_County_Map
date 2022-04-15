@@ -10,7 +10,7 @@ There are two versions using different techniques: one is built upon **ArcGIS** 
 | Outcome         | Shapefiles needs to be published on AGOL | GeoJSON     |
 
 *<a href="https://yijingzhou33.github.io/BTAA_County_Map/leaflet/">Live Demo [Leaflet]</a>*
-> Note that all instructions  based on Leaflet version. 
+> Note that all instructions are based on Leaflet version. 
 
 
 #### How to use
